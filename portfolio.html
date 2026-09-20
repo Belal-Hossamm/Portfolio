@@ -1,0 +1,757 @@
+<!DOCTYPE html>
+<html lang="en" class="dark scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Belal Hossam | Front-End Developer & CIS Student</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500&family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              400: '#2dd4bf',
+              500: '#14b8a6',
+              600: '#0d9488',
+            }
+          },
+          fontFamily: {
+            sans: ['Outfit', 'Inter', 'sans-serif'],
+            mono: ['Fira Code', 'monospace'],
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    .glass-panel {
+      background: rgba(15, 23, 42, 0.75);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+    }
+    .light .glass-panel {
+      background: rgba(255, 255, 255, 0.9);
+      border: 1px solid rgba(226, 232, 240, 0.8);
+    }
+    .bg-grid-pattern {
+      background-size: 40px 40px;
+      background-image: 
+        linear-gradient(to right, rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+    }
+    .light .bg-grid-pattern {
+      background-image: 
+        linear-gradient(to right, rgba(0, 0, 0, 0.04) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(0, 0, 0, 0.04) 1px, transparent 1px);
+    }
+  </style>
+  <!-- React & Babel Standalone -->
+  <script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin></script>
+  <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" crossorigin></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+</head>
+<body class="bg-[#080c14] text-slate-100 transition-colors duration-300 font-sans antialiased selection:bg-teal-500 selection:text-white">
+  <div id="root"></div>
+
+  <script type="text/babel">
+    const { useState, useEffect, useMemo } = React;
+
+    const personalInfo = {
+      name: "Belal Hossam",
+      role: "Full Stack Trainee & CIS Student (Software Engineering)",
+      titles: [
+        "Full Stack Trainee",
+        "Software Engineering Student (Year 3)",
+        "Front-End Developer",
+        "Marketing Vice Manager"
+      ],
+      status: "Available for Internships & Projects",
+      email: "belalhossamm@gmail.com",
+      phone: "+201061000747",
+      location: "Cairo, Egypt",
+      github: "https://github.com/Belal-Hossamm",
+      linkedin: "https://www.linkedin.com/in/belal-hossam-239590409",
+      summary: "Third-year Computer and Information Systems student at Sadat Academy for Management Sciences specializing in Software Engineering. Active Full Stack Trainee skilled in modern JavaScript, React, HTML/CSS, and Python, combining full-stack web engineering with proven leadership as Marketing Vice Manager and student activity member.",
+      education: {
+        institution: "Sadat Academy for Management Sciences",
+        degree: "Bachelor of Science in Computer and Information Systems",
+        specialization: "Specialization in Software Engineering",
+        location: "Cairo, Egypt",
+        graduation: "Expected: 2028",
+        status: "Currently in Year 3",
+        details: "Specializing in Software Engineering, Data Structures & Algorithms, Object-Oriented Software Design, Database Management Systems, and Modern Full-Stack Web Development."
+      },
+      languages: [
+        { name: "Arabic", level: "Native" },
+        { name: "English", level: "Intermediate / Professional Working" }
+      ]
+    };
+
+    const skillsData = [
+      { name: "HTML5", category: "Frontend", level: 95, tag: "Proficient" },
+      { name: "CSS3 / Flexbox / Grid", category: "Frontend", level: 90, tag: "Proficient" },
+      { name: "JavaScript (ES6+)", category: "Frontend", level: 85, tag: "Proficient" },
+      { name: "ReactJS", category: "Frontend", level: 85, tag: "Certified / Active" },
+      { name: "Responsive Web Design", category: "Frontend", level: 95, tag: "Proficient" },
+      { name: "Tailwind CSS", category: "Frontend", level: 85, tag: "Proficient" },
+      { name: "Python", category: "Programming Languages", level: 85, tag: "Cisco Certified" },
+      { name: "C++", category: "Programming Languages", level: 75, tag: "Core Foundations" },
+      { name: "Object-Oriented Programming", category: "Concepts & Tools", level: 88, tag: "Software Eng" },
+      { name: "Problem Solving", category: "Concepts & Tools", level: 85, tag: "Advanced" },
+      { name: "Git & GitHub", category: "Concepts & Tools", level: 90, tag: "Daily Driver" },
+      { name: "VS Code", category: "Concepts & Tools", level: 95, tag: "Proficient" },
+      { name: "Ubuntu / Linux", category: "Concepts & Tools", level: 75, tag: "Intermediate" },
+      { name: "AnyLogic Simulation", category: "Concepts & Tools", level: 80, tag: "Applied Modeling" },
+      { name: "Cybersecurity Fundamentals", category: "Concepts & Tools", level: 80, tag: "Cisco Certified" },
+      { name: "Marketing & Strategy", category: "Leadership & Soft Skills", level: 92, tag: "Vice Manager" },
+      { name: "Team Leadership", category: "Leadership & Soft Skills", level: 92, tag: "Experienced" },
+      { name: "Cross-Functional Collaboration", category: "Leadership & Soft Skills", level: 95, tag: "Practiced" },
+      { name: "Time & Campaign Management", category: "Leadership & Soft Skills", level: 88, tag: "Reliable" }
+    ];
+
+    const experienceData = [
+      {
+        id: "fullstack-trainee",
+        role: "Full Stack Trainee",
+        organization: "Professional Software Track",
+        organizationType: "Technical Training & Engineering",
+        period: "2026 – Present",
+        badge: "Full Stack & Engineering",
+        description: "Engaged in hands-on full-stack development, mastering modern front-end architectures, component lifecycles, and backend integrations.",
+        achievements: [
+          "Building and testing full-stack web applications utilizing modern JavaScript, React components, and responsive design principles.",
+          "Deepening software engineering methodologies including architectural patterns, API data consumption, and state management.",
+          "Collaborating on code reviews, performance optimizations, and agile project iterations."
+        ],
+        tech: ["ReactJS", "JavaScript (ES6+)", "HTML5/CSS3", "REST APIs", "Git"]
+      },
+      {
+        id: "marketing-vice-manager",
+        role: "Marketing Vice Manager",
+        organization: "Student Activity & Organizational Leadership",
+        organizationType: "Management & Growth",
+        period: "2025 – Present",
+        badge: "Leadership & Management",
+        description: "Leading comprehensive marketing strategies, managing creative team workflows, and driving audience engagement across digital platforms.",
+        achievements: [
+          "Co-directing marketing campaigns aligned with institutional events, expanding student engagement and digital presence.",
+          "Supervising content calendars, guiding cross-functional media members, and ensuring consistent brand voice.",
+          "Partnering closely with public relations and technical teams to execute synchronized promotional initiatives."
+        ],
+        tech: ["Marketing Strategy", "Team Leadership", "Brand Outreach", "Campaign Planning"]
+      },
+      {
+        id: "hult-prize",
+        role: "Front-End Member",
+        organization: "Hult Prize SAMS",
+        organizationType: "Global Student Activity",
+        period: "2025 – Present",
+        badge: "Technical & Front-End",
+        description: "Collaborated with the development team to architect and build responsive web interfaces for social enterprise initiatives.",
+        achievements: [
+          "Collaborated with the front-end team to develop and enhance website interfaces, contributing to improved usability and visual consistency.",
+          "Built responsive, user-friendly web pages using semantic HTML and modern CSS, following layout and accessibility best practices.",
+          "Participated actively in technical discussions and sprint planning sessions, sharpening problem-solving and cross-functional collaboration skills."
+        ],
+        tech: ["HTML5", "CSS3", "JavaScript", "Responsive Design"]
+      },
+      {
+        id: "aibe-social-media",
+        role: "Vice Head of Social Media",
+        organization: "AIBE SAMS",
+        organizationType: "Student Activity & Academic Club",
+        period: "2025 – 2026",
+        badge: "Leadership & Strategy",
+        description: "Spearheaded multi-channel digital strategies, team mentorship, and content delivery across university student networks.",
+        achievements: [
+          "Led and coordinated the social media team in planning and publishing content across multiple platforms, ensuring a consistent brand voice and calendar.",
+          "Developed and executed content strategies aligned with organizational events and workshops, driving measurable audience engagement and reach.",
+          "Mentored junior team members, delegated tasks effectively, and partnered with PR and creative design teams to deliver campaigns on schedule."
+        ],
+        tech: ["Digital Strategy", "Team Leadership", "Brand Voice", "Campaign Planning"]
+      },
+      {
+        id: "aibe-pr",
+        role: "Public Relations Member",
+        organization: "AIBE SAMS",
+        organizationType: "Student Activity & Academic Club",
+        period: "2025",
+        badge: "Public Relations & Award",
+        description: "Represented the organization in community outreach, public communications, and on-ground event management.",
+        achievements: [
+          "Assisted in organizing large-scale student events and managing external public communications, strengthening institutional presence.",
+          "Cultivated partnerships and facilitated communications between attendee students, speakers, and sponsors.",
+          "Honored with an official Certificate of Appreciation for outstanding dedication and contributions to the PR team."
+        ],
+        tech: ["Public Speaking", "Event Management", "Outreach", "Stakeholder Relations"]
+      }
+    ];
+
+    const projectsData = [
+      {
+        id: "ratatouille",
+        title: "Ratatouille Home Page",
+        category: "Web Development",
+        tags: ["HTML5", "CSS3", "Responsive UI", "Flexbox/Grid"],
+        summary: "A fully responsive, visually captivating culinary landing page built with semantic HTML and modern CSS. Prioritizes seamless mobile-first layouts, crisp typography, and cross-browser consistency.",
+        details: [
+          "Crafted with semantic HTML5 elements to ensure accessibility and structured document flow.",
+          "Implemented modular CSS with responsive media queries, fluid typography, and dynamic flexbox/grid alignments.",
+          "Optimized assets to guarantee smooth rendering across smartphones, tablets, and desktops."
+        ],
+        github: "https://github.com/Belal-Hossamm",
+        imageBg: "linear-gradient(135deg, #0d9488 0%, #115e59 100%)"
+      },
+      {
+        id: "bass-diffusion",
+        title: "Bass Diffusion Model — System Dynamics",
+        category: "Simulation & Algorithms",
+        tags: ["AnyLogic", "System Dynamics", "Python", "Mathematical Modeling"],
+        summary: "An advanced computational model built in AnyLogic simulating the classic Bass Diffusion phenomenon. Incorporates differential stocks, flows, and positive/negative feedback loops to project new product adoption.",
+        details: [
+          "Modeled mathematical equations representing innovators and imitators in product adoption lifecycles.",
+          "Configured dynamic stock and flow diagrams with parameter sensitivity analysis in AnyLogic.",
+          "Visualized real-time feedback loops to analyze market saturation and peak sales milestones."
+        ],
+        github: "https://github.com/Belal-Hossamm",
+        imageBg: "linear-gradient(135deg, #0369a1 0%, #075985 100%)"
+      },
+      {
+        id: "portfolio-web",
+        title: "Modern Developer Portfolio & Interactive Showcase",
+        category: "Web Development",
+        tags: ["React 19", "Tailwind CSS", "Vite", "UI/UX"],
+        summary: "A polished, interactive developer portfolio featuring dark/light theming, live search and skill filtering, an interactive experience timeline, certification drawer, and contact validation.",
+        details: [
+          "Modular React component architecture with customizable theme state and persistent localStorage.",
+          "Interactive filtering for skills and projects with instant responsive feedback.",
+          "Modern aesthetic using subtle glassmorphism, glowing accents, and fluid layouts."
+        ],
+        github: "https://github.com/Belal-Hossamm",
+        imageBg: "linear-gradient(135deg, #4f46e5 0%, #3730a3 100%)"
+      }
+    ];
+
+    const certificationsData = [
+      {
+        id: "react-components",
+        title: "Getting Started with ReactJS Components",
+        issuer: "Simplilearn SkillUp",
+        badgeColor: "from-teal-500 to-emerald-600",
+        description: "Core mastery of React component hierarchy, JSX syntax, state and props management, lifecycle fundamentals, and modern functional component paradigms.",
+        skillsGained: ["React Components", "JSX", "State & Props", "Virtual DOM"],
+        category: "Web Engineering"
+      },
+      {
+        id: "python-essentials",
+        title: "Python Essentials 1",
+        issuer: "Cisco Networking Academy",
+        badgeColor: "from-blue-500 to-indigo-600",
+        description: "Comprehensive training covering Python programming syntax, algorithms, data structures, conditional control flows, list processing, and modular functions.",
+        skillsGained: ["Python 3", "Data Structures", "Algorithmic Logic", "Functions"],
+        category: "Programming"
+      },
+      {
+        id: "cybersecurity-intro",
+        title: "Introduction to Cybersecurity",
+        issuer: "Cisco Networking Academy",
+        badgeColor: "from-purple-500 to-pink-600",
+        description: "Fundamental principles of digital security, confidentiality, integrity, availability (CIA triad), common threat vectors, data privacy, and mitigation strategies.",
+        skillsGained: ["Cyber Threats", "Network Security", "Data Privacy"],
+        category: "Security"
+      },
+      {
+        id: "aibe-pr-award",
+        title: "Certificate of Appreciation — Public Relations",
+        issuer: "AIBE SAMS",
+        badgeColor: "from-amber-500 to-orange-600",
+        description: "Recognized for outstanding leadership, active contributions to student outreach campaigns, event representation, and cross-functional team success.",
+        skillsGained: ["Public Relations", "Leadership", "Event Hosting"],
+        category: "Honors & Leadership"
+      }
+    ];
+
+    function App() {
+      const [darkMode, setDarkMode] = useState(true);
+      const [titleIndex, setTitleIndex] = useState(0);
+      const [activeSkillCat, setActiveSkillCat] = useState('All');
+      const [skillSearch, setSkillSearch] = useState('');
+      const [activeProjectCat, setActiveProjectCat] = useState('All');
+      const [resumeOpen, setResumeOpen] = useState(false);
+      const [copied, setCopied] = useState(false);
+      const [formStatus, setFormStatus] = useState(false);
+      const [formData, setFormData] = useState({ name: '', email: '', subject: '', message: '' });
+
+      useEffect(() => {
+        const root = document.documentElement;
+        if (darkMode) {
+          root.classList.add('dark');
+          root.classList.remove('light');
+        } else {
+          root.classList.remove('dark');
+          root.classList.add('light');
+        }
+      }, [darkMode]);
+
+      useEffect(() => {
+        const interval = setInterval(() => {
+          setTitleIndex((prev) => (prev + 1) % personalInfo.titles.length);
+        }, 3000);
+        return () => clearInterval(interval);
+      }, []);
+
+      const filteredSkills = useMemo(() => {
+        return skillsData.filter((s) => {
+          const matchCat = activeSkillCat === 'All' || s.category === activeSkillCat;
+          const matchSearch = s.name.toLowerCase().includes(skillSearch.toLowerCase()) || s.tag.toLowerCase().includes(skillSearch.toLowerCase());
+          return matchCat && matchSearch;
+        });
+      }, [activeSkillCat, skillSearch]);
+
+      const filteredProjects = useMemo(() => {
+        return projectsData.filter((p) => {
+          return activeProjectCat === 'All' || p.category === activeProjectCat;
+        });
+      }, [activeProjectCat]);
+
+      const handleCopy = () => {
+        navigator.clipboard.writeText(personalInfo.email);
+        setCopied(true);
+        setTimeout(() => setCopied(false), 2000);
+      };
+
+      const handleContactSubmit = (e) => {
+        e.preventDefault();
+        setFormStatus(true);
+        const mailtoLink = `mailto:${personalInfo.email}?subject=${encodeURIComponent(formData.subject || 'Portfolio Inquiry')}&body=${encodeURIComponent(`Hi Belal,\n\nName: ${formData.name}\nEmail: ${formData.email}\n\nMessage:\n${formData.message}`)}`;
+        window.location.href = mailtoLink;
+      };
+
+      return (
+        <div className="min-h-screen bg-[#f8fafc] dark:bg-[#080c14] text-slate-800 dark:text-slate-100 transition-colors duration-300 relative bg-grid-pattern">
+          {/* Navbar */}
+          <header className="fixed top-0 left-0 right-0 z-40 py-3 backdrop-blur-xl bg-white/80 dark:bg-[#080c14]/85 border-b border-slate-200/60 dark:border-white/10 shadow-sm">
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between">
+              <a href="#hero" className="flex items-center gap-2 font-bold text-xl tracking-tight">
+                <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-teal-500 to-cyan-400 flex items-center justify-center text-white font-black shadow-md">
+                  BH
+                </div>
+                <span className="font-extrabold text-slate-900 dark:text-white">
+                  Belal<span className="text-teal-500">.dev</span>
+                </span>
+              </a>
+
+              <nav className="hidden md:flex items-center gap-1 bg-slate-100/70 dark:bg-slate-900/60 p-1.5 rounded-full border border-slate-200/80 dark:border-white/10">
+                <a href="#about" className="px-4 py-1.5 rounded-full text-sm font-medium hover:text-teal-500">About</a>
+                <a href="#skills" className="px-4 py-1.5 rounded-full text-sm font-medium hover:text-teal-500">Skills</a>
+                <a href="#experience" className="px-4 py-1.5 rounded-full text-sm font-medium hover:text-teal-500">Experience</a>
+                <a href="#projects" className="px-4 py-1.5 rounded-full text-sm font-medium hover:text-teal-500">Projects</a>
+                <a href="#certifications" className="px-4 py-1.5 rounded-full text-sm font-medium hover:text-teal-500">Certifications</a>
+                <a href="#contact" className="px-4 py-1.5 rounded-full text-sm font-medium hover:text-teal-500">Contact</a>
+              </nav>
+
+              <div className="flex items-center gap-3">
+                <button
+                  onClick={() => setDarkMode(!darkMode)}
+                  className="p-2.5 rounded-xl border border-slate-200 dark:border-white/10 bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-200 text-xs font-bold"
+                >
+                  {darkMode ? "☀️ Light" : "🌙 Dark"}
+                </button>
+                <button
+                  onClick={() => setResumeOpen(true)}
+                  className="px-4 py-2 rounded-xl bg-teal-500 hover:bg-teal-600 text-white text-sm font-semibold shadow-md transition-all"
+                >
+                  Resume
+                </button>
+              </div>
+            </div>
+          </header>
+
+          {/* Hero */}
+          <section id="hero" className="pt-36 pb-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+              <div className="lg:col-span-7 space-y-6">
+                <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-teal-500/30 bg-teal-500/10 text-teal-600 dark:text-teal-400 text-xs sm:text-sm font-medium">
+                  <span className="w-2 h-2 rounded-full bg-teal-500 animate-ping"></span>
+                  <span>{personalInfo.status}</span>
+                </div>
+
+                <h1 className="text-4xl sm:text-6xl font-extrabold tracking-tight text-slate-900 dark:text-white">
+                  Hi, I'm <span className="text-teal-500">{personalInfo.name}</span>
+                </h1>
+
+                <div className="text-xl sm:text-2xl font-bold text-slate-600 dark:text-slate-300">
+                  I am a <span className="text-teal-500">{personalInfo.titles[titleIndex]}</span>
+                </div>
+
+                <p className="text-slate-600 dark:text-slate-300 text-base sm:text-lg leading-relaxed max-w-2xl">
+                  {personalInfo.summary}
+                </p>
+
+                <div className="flex flex-wrap gap-4 pt-2">
+                  <a href="#projects" className="px-6 py-3.5 rounded-xl bg-teal-500 hover:bg-teal-600 text-white font-semibold text-sm shadow-md">
+                    Explore Projects →
+                  </a>
+                  <button onClick={() => setResumeOpen(true)} className="px-6 py-3.5 rounded-xl border border-slate-300 dark:border-white/15 glass-panel text-sm font-semibold">
+                    Download CV
+                  </button>
+                  <a href="#contact" className="px-5 py-3.5 text-sm font-semibold text-teal-600 dark:text-teal-400">
+                    Let's Connect
+                  </a>
+                </div>
+
+                <div className="flex items-center gap-3 pt-4">
+                  <a href={personalInfo.github} target="_blank" className="p-3 rounded-xl border border-slate-200 dark:border-white/10 glass-panel hover:text-teal-500 font-bold text-xs">GitHub ↗</a>
+                  <a href={personalInfo.linkedin} target="_blank" className="p-3 rounded-xl border border-slate-200 dark:border-white/10 glass-panel hover:text-[#0a66c2] font-bold text-xs">LinkedIn ↗</a>
+                  <a href={`mailto:${personalInfo.email}`} className="p-3 rounded-xl border border-slate-200 dark:border-white/10 glass-panel hover:text-teal-500 font-bold text-xs">Email ↗</a>
+                </div>
+              </div>
+
+              <div className="lg:col-span-5">
+                <div className="glass-panel p-6 rounded-2xl shadow-2xl border border-slate-200 dark:border-white/10 font-mono text-xs sm:text-sm space-y-2">
+                  <div className="flex gap-2 pb-3 border-b border-white/10">
+                    <span className="w-3 h-3 rounded-full bg-red-500 inline-block"></span>
+                    <span className="w-3 h-3 rounded-full bg-yellow-500 inline-block"></span>
+                    <span className="w-3 h-3 rounded-full bg-green-500 inline-block"></span>
+                    <span className="ml-auto text-xs text-slate-400">belal_profile.js</span>
+                  </div>
+                  <p><span className="text-purple-400">const</span> <span className="text-teal-400">developer</span> = &#123;</p>
+                  <p className="pl-4"><span className="text-blue-400">name:</span> '{personalInfo.name}',</p>
+                  <p className="pl-4"><span className="text-blue-400">degree:</span> 'B.Sc. CIS - Software Eng (Year 3)',</p>
+                  <p className="pl-4"><span className="text-blue-400">institution:</span> 'Sadat Academy',</p>
+                  <p className="pl-4"><span className="text-blue-400">techStack:</span> ['React', 'JavaScript', 'Tailwind', 'Python', 'Full-Stack'],</p>
+                  <p className="pl-4"><span className="text-blue-400">roles:</span> ['Full Stack Trainee', 'Marketing Vice Manager'],</p>
+                  <p className="pl-4"><span className="text-blue-400">readyForInternship:</span> <span className="text-purple-400">true</span></p>
+                  <p>&#125;;</p>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          {/* About */}
+          <section id="about" className="py-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="text-center max-w-3xl mx-auto mb-12">
+              <span className="text-xs font-bold uppercase tracking-wider text-teal-500">About Me</span>
+              <h2 className="text-3xl font-extrabold mt-1">Crafting Digital Experiences with Engineering Precision</h2>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+              <div className="glass-panel p-6 sm:p-8 rounded-2xl space-y-4">
+                <h3 className="text-xl font-bold">Academic & Practical Journey</h3>
+                <p className="text-sm text-slate-600 dark:text-slate-300 leading-relaxed">
+                  Enrolled in my third year at <strong>Sadat Academy for Management Sciences</strong> in Cairo, pursuing a Bachelor of Science in Computer & Information Systems with a specialized focus on <strong className="text-teal-400">Software Engineering</strong> (Class of 2028).
+                </p>
+                <p className="text-sm text-slate-600 dark:text-slate-300 leading-relaxed">
+                  Active as a <strong>Full Stack Trainee</strong> and <strong>Marketing Vice Manager</strong>, combining technical engineering craft with proactive organizational leadership.
+                </p>
+                <div className="pt-4 border-t border-white/10 grid grid-cols-2 gap-3">
+                  <div className="p-3 rounded-xl bg-slate-800/40 border border-white/5">
+                    <div className="text-xs text-slate-400">Arabic</div>
+                    <div className="font-bold text-sm text-teal-400">Native</div>
+                  </div>
+                  <div className="p-3 rounded-xl bg-slate-800/40 border border-white/5">
+                    <div className="text-xs text-slate-400">English</div>
+                    <div className="font-bold text-sm text-teal-400">Intermediate</div>
+                  </div>
+                </div>
+              </div>
+
+              <div className="space-y-4">
+                <div className="glass-panel p-5 rounded-2xl border-l-4 border-l-teal-500">
+                  <h4 className="font-bold text-base">Front-End & UI Engineering</h4>
+                  <p className="text-xs text-slate-600 dark:text-slate-300 mt-1">Responsive, semantic layouts built with modern HTML5, CSS3, JavaScript, and React components.</p>
+                </div>
+                <div className="glass-panel p-5 rounded-2xl border-l-4 border-l-teal-500">
+                  <h4 className="font-bold text-base">Algorithmic & Systems Thinking</h4>
+                  <p className="text-xs text-slate-600 dark:text-slate-300 mt-1">Grounded in OOP, Python, C++, and dynamic simulation modeling in AnyLogic with Cisco cybersecurity certification.</p>
+                </div>
+                <div className="glass-panel p-5 rounded-2xl border-l-4 border-l-teal-500">
+                  <h4 className="font-bold text-base">Leadership & Cross-Team Synergy</h4>
+                  <p className="text-xs text-slate-600 dark:text-slate-300 mt-1">Demonstrated leadership in student activities (Hult Prize & AIBE SAMS) leading social media and PR outreach.</p>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          {/* Interactive Skills */}
+          <section id="skills" className="py-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="text-center max-w-3xl mx-auto mb-10">
+              <span className="text-xs font-bold uppercase tracking-wider text-teal-500">Skillset</span>
+              <h2 className="text-3xl font-extrabold mt-1">Interactive Skills Grid & Proficiencies</h2>
+            </div>
+
+            <div className="flex flex-col sm:flex-row items-center justify-between gap-4 mb-8">
+              <div className="flex flex-wrap gap-2">
+                {['All', 'Frontend', 'Programming Languages', 'Concepts & Tools', 'Leadership & Soft Skills'].map(c => (
+                  <button
+                    key={c}
+                    onClick={() => setActiveSkillCat(c)}
+                    className={`px-3.5 py-1.5 rounded-xl text-xs font-semibold transition-all ${
+                      activeSkillCat === c ? 'bg-teal-500 text-white' : 'glass-panel text-slate-400 hover:text-white'
+                    }`}
+                  >
+                    {c}
+                  </button>
+                ))}
+              </div>
+
+              <input
+                type="text"
+                placeholder="Search skills..."
+                value={skillSearch}
+                onChange={e => setSkillSearch(e.target.value)}
+                className="px-4 py-1.5 rounded-xl text-xs glass-panel focus:outline-none focus:ring-2 focus:ring-teal-500 w-full sm:w-60"
+              />
+            </div>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+              {filteredSkills.map(s => (
+                <div key={s.name} className="glass-panel p-5 rounded-2xl flex flex-col justify-between">
+                  <div>
+                    <div className="flex justify-between items-center mb-2">
+                      <span className="text-[11px] font-bold px-2 py-0.5 rounded-full bg-teal-500/10 text-teal-400 border border-teal-500/20">{s.tag}</span>
+                      <span className="text-xs font-mono text-slate-400">{s.level}%</span>
+                    </div>
+                    <h3 className="font-bold text-sm text-slate-900 dark:text-white">{s.name}</h3>
+                    <p className="text-[11px] text-slate-400">{s.category}</p>
+                  </div>
+                  <div className="w-full h-1.5 bg-slate-800 rounded-full mt-4 overflow-hidden">
+                    <div className="h-full bg-teal-500 rounded-full" style={{ width: `${s.level}%` }}></div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </section>
+
+          {/* Experience Timeline */}
+          <section id="experience" className="py-20 max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="text-center max-w-3xl mx-auto mb-12">
+              <span className="text-xs font-bold uppercase tracking-wider text-teal-500">Career Timeline</span>
+              <h2 className="text-3xl font-extrabold mt-1">Experience & Leadership Journey</h2>
+            </div>
+
+            <div className="space-y-8 relative border-l-2 border-teal-500/40 ml-4 sm:ml-8 pl-6 sm:pl-8">
+              {experienceData.map((exp) => (
+                <div key={exp.id} className="relative glass-panel p-6 rounded-2xl">
+                  <div className="absolute -left-[35px] sm:-left-[43px] top-6 w-4 h-4 rounded-full bg-teal-500 ring-4 ring-[#080c14]"></div>
+                  <div className="flex flex-wrap justify-between items-center gap-2 mb-2">
+                    <span className="text-xs font-bold px-2.5 py-0.5 rounded-full bg-teal-500/10 text-teal-400">{exp.badge}</span>
+                    <span className="text-xs font-semibold text-slate-400">{exp.period}</span>
+                  </div>
+                  <h3 className="text-lg font-bold text-slate-900 dark:text-white">{exp.role} — <span className="text-teal-400">{exp.organization}</span></h3>
+                  <p className="text-xs text-slate-600 dark:text-slate-300 mt-2">{exp.description}</p>
+                  <ul className="list-disc list-inside space-y-1 mt-3 text-xs text-slate-600 dark:text-slate-400">
+                    {exp.achievements.map((a, idx) => (
+                      <li key={idx}>{a}</li>
+                    ))}
+                  </ul>
+                </div>
+              ))}
+            </div>
+          </section>
+
+          {/* Projects */}
+          <section id="projects" className="py-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="text-center max-w-3xl mx-auto mb-10">
+              <span className="text-xs font-bold uppercase tracking-wider text-teal-500">Portfolio</span>
+              <h2 className="text-3xl font-extrabold mt-1">Interactive Project Showcase</h2>
+            </div>
+
+            <div className="flex justify-center gap-2 mb-8">
+              {['All', 'Web Development', 'Simulation & Algorithms'].map(c => (
+                <button
+                  key={c}
+                  onClick={() => setActiveProjectCat(c)}
+                  className={`px-4 py-2 rounded-xl text-xs font-semibold ${
+                    activeProjectCat === c ? 'bg-teal-500 text-white' : 'glass-panel text-slate-400 hover:text-white'
+                  }`}
+                >
+                  {c}
+                </button>
+              ))}
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              {filteredProjects.map((p) => (
+                <div key={p.id} className="glass-panel rounded-2xl overflow-hidden flex flex-col justify-between">
+                  <div className="h-36 p-5 flex flex-col justify-between" style={{ background: p.imageBg }}>
+                    <span className="text-[11px] font-bold uppercase tracking-wider bg-black/40 text-white px-2 py-0.5 rounded-full w-max">
+                      {p.category}
+                    </span>
+                    <h3 className="text-lg font-bold text-white drop-shadow">{p.title}</h3>
+                  </div>
+                  <div className="p-5 space-y-3">
+                    <p className="text-xs text-slate-600 dark:text-slate-300">{p.summary}</p>
+                    <div className="flex flex-wrap gap-1.5">
+                      {p.tags.map(t => (
+                        <span key={t} className="text-[10px] font-semibold px-2 py-0.5 rounded bg-teal-500/10 text-teal-400 border border-teal-500/20">{t}</span>
+                      ))}
+                    </div>
+                  </div>
+                  <div className="p-5 pt-0">
+                    <a href={p.github} target="_blank" className="w-full block text-center py-2 rounded-xl bg-slate-800 hover:bg-teal-500 text-white text-xs font-bold transition-colors">
+                      View on GitHub ↗
+                    </a>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </section>
+
+          {/* Certifications */}
+          <section id="certifications" className="py-20 max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="text-center max-w-3xl mx-auto mb-10">
+              <span className="text-xs font-bold uppercase tracking-wider text-teal-500">Credentials</span>
+              <h2 className="text-3xl font-extrabold mt-1">Certifications & Honors</h2>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              {certificationsData.map(c => (
+                <div key={c.id} className="glass-panel p-6 rounded-2xl space-y-3">
+                  <div className="flex justify-between items-start">
+                    <div>
+                      <span className="text-xs font-bold text-teal-400 uppercase">{c.issuer}</span>
+                      <h3 className="text-base font-bold text-slate-900 dark:text-white">{c.title}</h3>
+                    </div>
+                    <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">Verified</span>
+                  </div>
+                  <p className="text-xs text-slate-600 dark:text-slate-300">{c.description}</p>
+                  <div className="flex flex-wrap gap-1.5 pt-2">
+                    {c.skillsGained.map(sk => (
+                      <span key={sk} className="text-[10px] px-2 py-0.5 rounded bg-slate-800 text-slate-300">{sk}</span>
+                    ))}
+                  </div>
+                </div>
+              ))}
+            </div>
+          </section>
+
+          {/* Contact */}
+          <section id="contact" className="py-20 max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="text-center max-w-3xl mx-auto mb-10">
+              <span className="text-xs font-bold uppercase tracking-wider text-teal-500">Contact</span>
+              <h2 className="text-3xl font-extrabold mt-1">Get In Touch</h2>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+              <div className="glass-panel p-6 sm:p-8 rounded-2xl space-y-6">
+                <div>
+                  <h3 className="text-lg font-bold">Contact Channels</h3>
+                  <p className="text-xs text-slate-400 mt-1">Direct inquiries, internships, and collaborations.</p>
+                </div>
+
+                <div className="p-4 rounded-xl bg-slate-800/40 flex items-center justify-between">
+                  <div>
+                    <div className="text-[11px] text-slate-400">Direct Email</div>
+                    <div className="text-sm font-bold text-teal-400">{personalInfo.email}</div>
+                  </div>
+                  <button onClick={handleCopy} className="px-3 py-1 text-xs rounded bg-teal-500 text-white font-semibold">
+                    {copied ? "Copied!" : "Copy"}
+                  </button>
+                </div>
+
+                <div className="space-y-2 text-xs">
+                  <div><strong>Phone:</strong> {personalInfo.phone}</div>
+                  <div><strong>Location:</strong> {personalInfo.location}</div>
+                  <div><strong>LinkedIn:</strong> <a href={personalInfo.linkedin} target="_blank" className="text-teal-400 hover:underline">in/belal-hossam-239590409</a></div>
+                  <div><strong>GitHub:</strong> <a href={personalInfo.github} target="_blank" className="text-teal-400 hover:underline">Belal-Hossamm</a></div>
+                </div>
+              </div>
+
+              <div className="glass-panel p-6 sm:p-8 rounded-2xl">
+                {formStatus ? (
+                  <div className="text-center py-10 space-y-3">
+                    <div className="text-3xl">🎉</div>
+                    <h4 className="font-bold text-teal-400">Email Client Prepared!</h4>
+                    <p className="text-xs text-slate-400">Message prefilled for {personalInfo.email}.</p>
+                    <button onClick={() => setFormStatus(false)} className="text-xs text-teal-400 underline">Send another</button>
+                  </div>
+                ) : (
+                  <form onSubmit={handleContactSubmit} className="space-y-3">
+                    <input
+                      type="text"
+                      required
+                      placeholder="Your Name"
+                      value={formData.name}
+                      onChange={e => setFormData({...formData, name: e.target.value})}
+                      className="w-full px-3 py-2 rounded-xl text-xs glass-panel focus:outline-none focus:ring-2 focus:ring-teal-500"
+                    />
+                    <input
+                      type="email"
+                      required
+                      placeholder="Your Email"
+                      value={formData.email}
+                      onChange={e => setFormData({...formData, email: e.target.value})}
+                      className="w-full px-3 py-2 rounded-xl text-xs glass-panel focus:outline-none focus:ring-2 focus:ring-teal-500"
+                    />
+                    <input
+                      type="text"
+                      placeholder="Subject"
+                      value={formData.subject}
+                      onChange={e => setFormData({...formData, subject: e.target.value})}
+                      className="w-full px-3 py-2 rounded-xl text-xs glass-panel focus:outline-none focus:ring-2 focus:ring-teal-500"
+                    />
+                    <textarea
+                      rows="4"
+                      required
+                      placeholder="Message..."
+                      value={formData.message}
+                      onChange={e => setFormData({...formData, message: e.target.value})}
+                      className="w-full px-3 py-2 rounded-xl text-xs glass-panel focus:outline-none focus:ring-2 focus:ring-teal-500"
+                    ></textarea>
+                    <button type="submit" className="w-full py-2.5 rounded-xl bg-teal-500 hover:bg-teal-600 text-white text-xs font-bold">
+                      Send Message
+                    </button>
+                  </form>
+                )}
+              </div>
+            </div>
+          </section>
+
+          {/* Footer */}
+          <footer className="py-8 border-t border-white/10 text-center text-xs text-slate-400">
+            © {new Date().getFullYear()} Belal Hossam. Built with React & Tailwind CSS.
+          </footer>
+
+          {/* Resume Modal */}
+          {resumeOpen && (
+            <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md">
+              <div className="glass-panel max-w-2xl w-full p-6 sm:p-8 rounded-2xl space-y-4 max-h-[85vh] overflow-y-auto">
+                <div className="flex justify-between items-center border-b border-white/10 pb-3">
+                  <h3 className="font-bold text-lg">Belal Hossam — Resume</h3>
+                  <div className="flex gap-2">
+                    <button onClick={() => window.print()} className="px-3 py-1 bg-teal-500 text-white rounded-lg text-xs font-bold">Print / PDF</button>
+                    <button onClick={() => setResumeOpen(false)} className="px-2 py-1 text-slate-400 hover:text-white">✕</button>
+                  </div>
+                </div>
+                <div className="text-xs space-y-3 text-slate-300">
+                  <p><strong>Contact:</strong> {personalInfo.email} | {personalInfo.phone} | {personalInfo.location}</p>
+                  <p><strong>LinkedIn:</strong> {personalInfo.linkedin}</p>
+                  <p><strong>GitHub:</strong> {personalInfo.github}</p>
+                  <hr className="border-white/10" />
+                  <p><strong>Summary:</strong> {personalInfo.summary}</p>
+                  <hr className="border-white/10" />
+                  <p><strong>Education:</strong> {personalInfo.education.institution} — {personalInfo.education.degree} ({personalInfo.education.graduation})</p>
+                  <hr className="border-white/10" />
+                  <p><strong>Key Skills:</strong> JavaScript, React, HTML5, CSS3, Python, C++, AnyLogic Simulation, Git/GitHub, Team Leadership</p>
+                  <hr className="border-white/10" />
+                  <p><strong>Experience:</strong> Front-End Member @ Hult Prize SAMS (2025–Present), Vice Head of Social Media @ AIBE SAMS (2025–2026), PR Member @ AIBE SAMS (2025)</p>
+                </div>
+              </div>
+            </div>
+          )}
+        </div>
+      );
+    }
+
+    ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+  </script>
+</body>
+</html>
